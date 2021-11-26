@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Stamb Application</string>
-    <string name="edit_message">Enter A Message</string>
-    <string name="button_send">Send</string>
+    <string name="active_classes_text">Active Classes</string>
+    <string name="archived_classes_text">Archived Classes</string>
 </resources>
