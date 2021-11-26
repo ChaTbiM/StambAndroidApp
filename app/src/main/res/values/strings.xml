@@ -2,4 +2,6 @@
     <string name="app_name">Stamb Application</string>
     <string name="active_classes_text">Active Classes</string>
     <string name="archived_classes_text">Archived Classes</string>
+    <string name="create_class_text">Create class</string>
+
 </resources>

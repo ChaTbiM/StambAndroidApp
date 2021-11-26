@@ -27,7 +27,7 @@ public class ClassAdapter extends
     private List<ClassModel> classList;
 
     public ClassAdapter(List<ClassModel> classList) {
-        classList = classList;
+        this.classList = classList;
     }
 
     @Override

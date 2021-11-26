@@ -1,6 +1,7 @@
 package com.example.stambapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -14,6 +15,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,18 +52,26 @@ public class MainActivity extends AppCompatActivity {
 //        );
 //
 //        RequestQueueSingleton.getInstance(this).addToRequestQueue(getRequest);
-        // Lookup the recyclerview in activity layout
-        RecyclerView ClassListView = (RecyclerView) findViewById(R.id.);
 
-        // Initialize contacts
-        contacts = Contact.createContactsList(20);
-        // Create adapter passing in the sample user data
-        ContactsAdapter adapter = new ContactsAdapter(contacts);
-        // Attach the adapter to the recyclerview to populate items
-        rvContacts.setAdapter(adapter);
-        // Set layout manager to position the items
-        rvContacts.setLayoutManager(new LinearLayoutManager(this));
-        // That's all!
+        RecyclerView activeClassListView = (RecyclerView) findViewById(R.id.activeClassListView);
+        RecyclerView archivedClassListView = (RecyclerView) findViewById(R.id.archivedClassListView);
+
+        List<ClassModel> activeClassList = new ArrayList<>();
+        activeClassList.add(new ClassModel(1,"isi2_master_2020_2021"));
+        activeClassList.add(new ClassModel(2,"web_master_2020_2021"));
+        activeClassList.add(new ClassModel(2,"resaux_master_2020_2021"));
+
+        List<ClassModel> archivedClassList = new ArrayList<>();
+        archivedClassList.add(new ClassModel(1,"isi2_master_2019_2020"));
+
+        ClassAdapter activeClassListAdapter = new ClassAdapter(activeClassList);
+        ClassAdapter archivedClassListAdapter = new ClassAdapter(archivedClassList);
+
+        activeClassListView.setAdapter(activeClassListAdapter);
+        archivedClassListView.setAdapter(archivedClassListAdapter);
+
+        activeClassListView.setLayoutManager(new LinearLayoutManager(this));
+        archivedClassListView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 }
