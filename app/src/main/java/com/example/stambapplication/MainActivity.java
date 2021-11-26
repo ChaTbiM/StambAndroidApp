@@ -57,15 +57,21 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView archivedClassListView = (RecyclerView) findViewById(R.id.archivedClassListView);
 
         List<ClassModel> activeClassList = new ArrayList<>();
-        activeClassList.add(new ClassModel(1,"isi2_master_2020_2021"));
-        activeClassList.add(new ClassModel(2,"web_master_2020_2021"));
-        activeClassList.add(new ClassModel(2,"resaux_master_2020_2021"));
+        activeClassList.add(new ClassModel(1, "isi2_master_2020_2021"));
+        activeClassList.add(new ClassModel(2, "web_master_2020_2021"));
+        activeClassList.add(new ClassModel(3, "resaux_master_2020_2021"));
 
         List<ClassModel> archivedClassList = new ArrayList<>();
-        archivedClassList.add(new ClassModel(1,"isi2_master_2019_2020"));
+        archivedClassList.add(new ClassModel(1, "isi2_master_2019_2020"));
 
-        ClassAdapter activeClassListAdapter = new ClassAdapter(activeClassList);
-        ClassAdapter archivedClassListAdapter = new ClassAdapter(archivedClassList);
+        ClassAdapter activeClassListAdapter = new ClassAdapter(activeClassList, classModel -> {
+            System.out.println("active class clicked" + classModel.getId());
+        }
+        );
+
+        ClassAdapter archivedClassListAdapter = new ClassAdapter(archivedClassList, classModel -> {
+            System.out.println("archived class clicked" + classModel.getId());
+        });
 
         activeClassListView.setAdapter(activeClassListAdapter);
         archivedClassListView.setAdapter(archivedClassListAdapter);
