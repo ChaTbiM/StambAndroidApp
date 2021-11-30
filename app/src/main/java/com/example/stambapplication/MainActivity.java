@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -33,10 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
+
+        Button createClassButton = (Button) findViewById(R.id.createClassBtn);
 
 //        TODO : FETCH CLASSES DATA AND ADD THEM TO ACTIVE CLASS OR ARCHIVED CLASS
 //        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -58,6 +61,20 @@ public class MainActivity extends AppCompatActivity {
 //
 //        RequestQueueSingleton.getInstance(this).addToRequestQueue(getRequest);
 
+        createClassLists();
+
+
+    }
+
+
+    public void accessGroup(int classId) {
+        Intent intent = new Intent(this, GroupsActivity.class);
+
+        intent.putExtra(String.valueOf(CLASS_ID), classId);
+        startActivity(intent);
+    }
+
+    public void createClassLists() {
         RecyclerView activeClassListView = (RecyclerView) findViewById(R.id.activeClassListView);
 
         List<ClassModel> activeClassList = new ArrayList<>();
@@ -66,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         activeClassList.add(new ClassModel(3, "resaux_master_2020_2021"));
 
         ClassAdapter activeClassListAdapter = new ClassAdapter(activeClassList, classModel -> {
-            System.out.println("active class clicked" + classModel.getId());
             accessGroup(classModel.getId());
         }
         );
@@ -78,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         ClassAdapter archivedClassListAdapter = new ClassAdapter(archivedClassList, classModel -> {
-            System.out.println("archived class clicked" + classModel.getId());
             accessGroup(classModel.getId());
         });
 
@@ -87,16 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
         activeClassListView.setLayoutManager(new LinearLayoutManager(this));
         archivedClassListView.setLayoutManager(new LinearLayoutManager(this));
-
-
-    }
-
-
-    public void accessGroup(int classId) {
-        Intent intent = new Intent(this, GroupsActivity.class);
-
-        intent.putExtra(String.valueOf(CLASS_ID), classId);
-        startActivity(intent);
     }
 
 
