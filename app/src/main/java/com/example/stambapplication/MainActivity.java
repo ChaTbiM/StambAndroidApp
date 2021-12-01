@@ -26,10 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    public static int CLASS_ID = 0;
-    private boolean isClassesEmpty = true;
     private static final String SERVER = "http://10.0.2.2:3000/";
-    private String url = "https://pokeapi.co/api/v2/pokemon/ditto";
+    public static int CLASS_ID = 0;
+    private final boolean isClassesEmpty = true;
+    private final String url = "https://pokeapi.co/api/v2/pokemon/ditto";
     private RequestQueue queue;
 
     @Override
@@ -39,7 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
-        Button createClassButton = (Button) findViewById(R.id.createClassBtn);
+        Button createClassButton = findViewById(R.id.createClassBtn);
+
+        createClassButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                goToCreateClassView();
+            }
+        });
 
 //        TODO : FETCH CLASSES DATA AND ADD THEM TO ACTIVE CLASS OR ARCHIVED CLASS
 //        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -66,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void goToCreateClassView() {
+        Intent createClassIntent = new Intent(this, CreateClassActivity.class);
+
+        startActivity(createClassIntent);
+    }
+
 
     public void accessGroup(int classId) {
         Intent intent = new Intent(this, GroupsActivity.class);
@@ -75,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createClassLists() {
-        RecyclerView activeClassListView = (RecyclerView) findViewById(R.id.activeClassListView);
+        RecyclerView activeClassListView = findViewById(R.id.activeClassListView);
 
         List<ClassModel> activeClassList = new ArrayList<>();
         activeClassList.add(new ClassModel(1, "isi2_master_2020_2021"));
@@ -87,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         }
         );
 
-        RecyclerView archivedClassListView = (RecyclerView) findViewById(R.id.archivedClassListView);
+        RecyclerView archivedClassListView = findViewById(R.id.archivedClassListView);
 
         List<ClassModel> archivedClassList = new ArrayList<>();
         archivedClassList.add(new ClassModel(1, "isi2_master_2019_2020"));
