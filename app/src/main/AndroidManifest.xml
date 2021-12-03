@@ -12,7 +12,8 @@
         android:theme="@style/Theme.StambApplication"
         android:usesCleartextTraffic="true">
         <activity android:name=".GroupsActivity"></activity>
-        <activity android:name=".CreateClassActivity"></activity>
+        <activity android:name=".CreateClass"></activity>
+        <activity android:name=".CreateGroups"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

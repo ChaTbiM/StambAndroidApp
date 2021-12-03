@@ -4,8 +4,10 @@
     <string name="archived_classes_text">Archived Classes</string>
     <string name="create_class_text">Create Class</string>
     <string name="create_group_text">Create Group</string>
-    <string name="groups">Groups</string>
     <string name="specialty">Specialty</string>
     <string name="grade">Grade</string>
-
+    <string name="groups">Groups</string>
+    <string name="td_groups">TD Groups</string>
+    <string name="tp_groups">TP Groups</string>
+    <string name="enter_group_number">Enter Group Number</string>
 </resources>

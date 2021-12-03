@@ -23,8 +23,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Specialty" />
+        android:hint="@string/specialty"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/editTextTextPersonName2"
@@ -34,8 +34,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:inputType="number|textPersonName"
-        android:text="@string/grade" />
+        android:hint="@string/grade"
+        android:inputType="number|textPersonName" />
 
     <LinearLayout
         android:layout_width="match_parent"

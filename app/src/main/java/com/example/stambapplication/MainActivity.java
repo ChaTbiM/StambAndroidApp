@@ -1,26 +1,15 @@
 package com.example.stambapplication;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToCreateClassView() {
-        Intent createClassIntent = new Intent(this, CreateClassActivity.class);
+        Intent createClassIntent = new Intent(this, CreateClass.class);
 
         startActivity(createClassIntent);
     }

@@ -11,6 +11,12 @@ public class GroupModel {
         this.type = type;
     }
 
+    public GroupModel(int groupNumber, String type) {
+        this.groupNumber = groupNumber;
+        this.type = type;
+    }
+
+
     public int getId() {
         return id;
     }
