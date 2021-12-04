@@ -10,4 +10,6 @@
     <string name="td_groups">TD Groups</string>
     <string name="tp_groups">TP Groups</string>
     <string name="enter_group_number">Enter Group Number</string>
+    <string name="number_of_td_groups">Number Of Td Groups</string>
+    <string name="number_of_tp_groups">Number Of Tp Groups</string>
 </resources>

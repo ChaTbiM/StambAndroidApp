@@ -2,21 +2,31 @@ package com.example.stambapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateClass extends AppCompatActivity {
+
     public static boolean IS_TD_GROUPS_CHECKED = false;
     public static boolean IS_TP_GROUPS_CHECKED = false;
+
     public boolean isTdGroupsChecked = false;
     public boolean isTpGroupsChecked = false;
+
+    public String specialty;
+    public int grade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +37,54 @@ public class CreateClass extends AppCompatActivity {
         CheckBox hasTdGroups = findViewById(R.id.tdCheckbox);
         CheckBox hasTpGroups = findViewById(R.id.tpCheckbox);
         Button createClassNextBtn = findViewById(R.id.createClassNextBtn);
+
+        EditText specialtyInput = findViewById(R.id.specialtyInput);
+        EditText gradeInput = findViewById(R.id.gradeInput);
+
+        specialtyInput.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                specialty = s.toString();
+
+                if(specialty.length() > 0 && grade > 0 ){
+                    createClassNextBtn.setEnabled(true);
+                }else if(specialty.length() == 0 || grade <= 0) {
+                    createClassNextBtn.setEnabled(false);
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        gradeInput.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                if(s.toString().trim().length() > 0){
+                    grade = Integer.parseInt(s.toString());
+                }else {
+                    grade = 0;
+                }
+                System.out.println("resutls   "+grade);
+                if (!TextUtils.isEmpty( s.toString()) && !TextUtils.isEmpty( specialty) ) {
+                    createClassNextBtn.setEnabled(true);
+                }else {
+                    createClassNextBtn.setEnabled(false);
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+
+
+
 
         hasTdGroups.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -64,7 +122,7 @@ public class CreateClass extends AppCompatActivity {
             }
         });
 
-
+        createClassNextBtn.setEnabled(false);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -92,8 +150,8 @@ public class CreateClass extends AppCompatActivity {
         } else {
             Intent intent = new Intent(this, CreateGroups.class);
 
-            intent.putExtra(String.valueOf(IS_TD_GROUPS_CHECKED), isTdGroupsChecked);
-            intent.putExtra(String.valueOf(IS_TP_GROUPS_CHECKED), isTpGroupsChecked);
+            intent.putExtra("IS_TD_GROUPS_CHECKED", isTdGroupsChecked);
+            intent.putExtra("IS_TP_GROUPS_CHECKED", isTpGroupsChecked);
             startActivity(intent);
         }
     }
