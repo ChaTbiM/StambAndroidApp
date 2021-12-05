@@ -39,16 +39,13 @@ public class CreateGroups extends AppCompatActivity {
         LinearLayout tdGroupsLinearLayout = findViewById(R.id.tdGroupsLinearLayout);
         LinearLayout tpGroupsLinearLayout = findViewById(R.id.tpGroupsLinearLayout);
 
-        if(!isTdGroupsChecked){
+        if (!isTdGroupsChecked) {
             tdGroupsLinearLayout.setVisibility(View.GONE);
         }
 
-        if(!isTpGroupsChecked){
+        if (!isTpGroupsChecked) {
             tpGroupsLinearLayout.setVisibility(View.GONE);
         }
-
-        System.out.println("td checked" + isTdGroupsChecked);
-        System.out.println("tp checked" + isTpGroupsChecked);
 
         Button finalCreateClass = findViewById(R.id.finalCreateClass);
 
@@ -61,7 +58,6 @@ public class CreateGroups extends AppCompatActivity {
 
         EditText numberOfTdGroupsEditText = (findViewById(R.id.numberOfTdGroups));
         EditText numberOfTpGroupsEditText = findViewById(R.id.numberOfTpGroups);
-
 
 
         numberOfTdGroupsEditText.addTextChangedListener(new TextWatcher() {
