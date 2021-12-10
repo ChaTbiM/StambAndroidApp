@@ -20,36 +20,8 @@ public class CreateGroupsAdapter extends RecyclerView.Adapter<CreateGroupsAdapte
     private List<GroupModel> groupList;
 
 
-    public CreateGroupsAdapter(List<GroupModel> groupList ) {
+    public CreateGroupsAdapter(List<GroupModel> groupList) {
         this.groupList = groupList;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public EditText groupNumberText;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            groupNumberText = (EditText) itemView.findViewById(R.id.groupNumberText);
-        }
-
-        public void bind(GroupModel groupModel) {
-            groupNumberText.addTextChangedListener(new TextWatcher() {
-
-                public void afterTextChanged(Editable s) {
-                    if(TextUtils.isEmpty(s.toString().trim())){
-                        groupModel.setGroupNumber(-1);
-                    }else {
-                        groupModel.setGroupNumber(Integer.parseInt(s.toString()));
-                    }
-                }
-
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            });
-
-        }
-
     }
 
     @Override
@@ -72,10 +44,40 @@ public class CreateGroupsAdapter extends RecyclerView.Adapter<CreateGroupsAdapte
         TextView textView = holder.groupNumberText;
     }
 
-
     @Override
     public int getItemCount() {
         return groupList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public EditText groupNumberText;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            groupNumberText = (EditText) itemView.findViewById(R.id.groupNumberText);
+        }
+
+        public void bind(GroupModel groupModel) {
+            groupNumberText.addTextChangedListener(new TextWatcher() {
+
+                public void afterTextChanged(Editable s) {
+                    if (TextUtils.isEmpty(s.toString().trim())) {
+                        groupModel.setGroupNumber(-1);
+                    } else {
+                        groupModel.setGroupNumber(Integer.parseInt(s.toString()));
+                    }
+                }
+
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+            });
+
+        }
+
     }
 
 }

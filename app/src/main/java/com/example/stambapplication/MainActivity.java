@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +24,25 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     public static int CLASS_ID = 0;
     private final boolean isClassesEmpty = true;
     private final String url = "http://10.0.2.2:3000/";
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private RequestQueue queue;
+    private ArrayList<ClassModel> activeClasses = new ArrayList<ClassModel>();
+    private ArrayList<ClassModel> archivedClasses = new ArrayList<ClassModel>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,27 +59,56 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        TODO : FETCH CLASSES DATA AND ADD THEM TO ACTIVE CLASS OR ARCHIVED CLASS
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("Response", response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
-                    }
+
+        StringRequest getActiveClasses = new StringRequest(Request.Method.GET, url + "active-classes", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    Log.d("response", response);
+                    activeClasses = objectMapper.readValue(response, new TypeReference<List<ClassModel>>() {
+                    });
+                    createActiveClasses(activeClasses);
+                    Log.d("active", activeClasses.toString());
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                } catch (JsonMappingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-        );
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error", error.toString());
+            }
+        });
 
-        RequestQueueSingleton.getInstance(this).addToRequestQueue(getRequest);
 
-        createClassLists();
+        StringRequest getArchivedClasses = new StringRequest(Request.Method.GET, url + "archived-classes", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    archivedClasses = objectMapper.readValue(response, new TypeReference<List<ClassModel>>() {
+                    });
+                    createArchivedClasses(archivedClasses);
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                } catch (JsonMappingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error", error.toString());
+            }
+        });
 
-
+        RequestQueueSingleton.getInstance(this).addToRequestQueue(getActiveClasses);
+        RequestQueueSingleton.getInstance(this).addToRequestQueue(getArchivedClasses);
     }
 
     public void goToCreateClassView() {
@@ -82,33 +125,30 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void createClassLists() {
+    public void createActiveClasses(ArrayList<ClassModel> activeClasses) {
         RecyclerView activeClassListView = findViewById(R.id.activeClassListView);
 
-        List<ClassModel> activeClassList = new ArrayList<>();
-        activeClassList.add(new ClassModel(1, "isi2_master_2020_2021"));
-        activeClassList.add(new ClassModel(2, "web_master_2020_2021"));
-        activeClassList.add(new ClassModel(3, "resaux_master_2020_2021"));
+        ArrayList<ClassModel> activeClassList = activeClasses;
 
         ClassAdapter activeClassListAdapter = new ClassAdapter(activeClassList, classModel -> {
             accessGroup(classModel.getId());
         }
         );
 
+        activeClassListView.setAdapter(activeClassListAdapter);
+        activeClassListView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public void createArchivedClasses(ArrayList<ClassModel> archivedClasses) {
         RecyclerView archivedClassListView = findViewById(R.id.archivedClassListView);
 
-        List<ClassModel> archivedClassList = new ArrayList<>();
-        archivedClassList.add(new ClassModel(1, "isi2_master_2019_2020"));
-
+        List<ClassModel> archivedClassList = archivedClasses;
 
         ClassAdapter archivedClassListAdapter = new ClassAdapter(archivedClassList, classModel -> {
             accessGroup(classModel.getId());
         });
 
-        activeClassListView.setAdapter(activeClassListAdapter);
         archivedClassListView.setAdapter(archivedClassListAdapter);
-
-        activeClassListView.setLayoutManager(new LinearLayoutManager(this));
         archivedClassListView.setLayoutManager(new LinearLayoutManager(this));
     }
 
