@@ -8,12 +8,18 @@ android {
 
     defaultConfig {
         applicationId "com.example.stambapplication"
-        minSdkVersion 16
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
+        multiDexEnabled true
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    packagingOptions {
+        pickFirst "androidsupportmultidexversion.txt"
     }
 
     buildTypes {
@@ -34,6 +40,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'org.apache.poi:poi-ooxml:5.1.0'
+    implementation 'org.apache.poi:poi:5.1.0'
+    implementation 'commons-collections:commons-collections:20040616'
+    implementation 'androidx.multidex:multidex:2.0.1'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -45,5 +55,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.8.5'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+
+    implementation 'com.android.support:multidex:1.0.3'
+
 
 }

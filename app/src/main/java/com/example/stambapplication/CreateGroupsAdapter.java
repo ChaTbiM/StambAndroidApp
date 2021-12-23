@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -51,11 +52,14 @@ public class CreateGroupsAdapter extends RecyclerView.Adapter<CreateGroupsAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public EditText groupNumberText;
+        public Button importButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             groupNumberText = (EditText) itemView.findViewById(R.id.groupNumberText);
+            importButton = itemView.findViewById(R.id.importButton);
+            importButton.setText("import");
         }
 
         public void bind(GroupModel groupModel) {
@@ -73,6 +77,13 @@ public class CreateGroupsAdapter extends RecyclerView.Adapter<CreateGroupsAdapte
                 }
 
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+            });
+
+
+            importButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Do something in response to button click
                 }
             });
 

@@ -10,10 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GroupsActivity extends AppCompatActivity {
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,4 +57,10 @@ public class GroupsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void getAllClassGroups (int classId) {
+
+    }
+
+
 }

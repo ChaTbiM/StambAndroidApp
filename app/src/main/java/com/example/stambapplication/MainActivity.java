@@ -1,9 +1,12 @@
 package com.example.stambapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ClassModel> activeClasses = new ArrayList<ClassModel>();
     private ArrayList<ClassModel> archivedClasses = new ArrayList<ClassModel>();
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
