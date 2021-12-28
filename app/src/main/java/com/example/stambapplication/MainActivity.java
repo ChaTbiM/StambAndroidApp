@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     public static int CLASS_ID = 0;
     private final boolean isClassesEmpty = true;
     private final String url = "http://10.0.2.2:3000/";
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private RequestQueue queue;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private ArrayList<ClassModel> activeClasses = new ArrayList<ClassModel>();
     private ArrayList<ClassModel> archivedClasses = new ArrayList<ClassModel>();
 
@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-                    Log.d("response", response);
                     activeClasses = objectMapper.readValue(response, new TypeReference<List<ClassModel>>() {
                     });
                     createActiveClasses(activeClasses);
@@ -115,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        RequestQueueSingleton.getInstance(this).addToRequestQueue(getActiveClasses);
-        RequestQueueSingleton.getInstance(this).addToRequestQueue(getArchivedClasses);
+        RequestQueueSingleton.getInstance(getApplicationContext()).addToRequestQueue(getActiveClasses);
+        RequestQueueSingleton.getInstance(getApplicationContext()).addToRequestQueue(getArchivedClasses);
     }
 
     public void goToCreateClassView() {

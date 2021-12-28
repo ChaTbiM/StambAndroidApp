@@ -5,6 +5,7 @@
     <string name="create_class_text">Create Class</string>
     <string name="create_group_text">Create Group</string>
     <string name="specialty">Specialty</string>
+    <string name="module">Module</string>
     <string name="grade">Grade</string>
     <string name="groups">Groups</string>
     <string name="td_groups">TD Groups</string>

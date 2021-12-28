@@ -1,6 +1,7 @@
 package com.example.stambapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class CreateGroupsAdapter extends RecyclerView.Adapter<CreateGroupsAdapter.ViewHolder> {
     private List<GroupModel> groupList;
+    private static int RESULTS = 1;
 
 
     public CreateGroupsAdapter(List<GroupModel> groupList) {
@@ -77,13 +79,6 @@ public class CreateGroupsAdapter extends RecyclerView.Adapter<CreateGroupsAdapte
                 }
 
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
-            });
-
-
-            importButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    // Do something in response to button click
                 }
             });
 

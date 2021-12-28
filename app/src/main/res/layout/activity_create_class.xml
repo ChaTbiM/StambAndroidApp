@@ -16,6 +16,17 @@
         android:text="Create Class" />
 
     <EditText
+        android:id="@+id/moduleInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/module"
+        android:inputType="textPersonName" />
+
+    <EditText
         android:id="@+id/specialtyInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,35 +48,8 @@
         android:hint="@string/grade"
         android:inputType="number" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/tdCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="Has TD Groups ?" />
-
-        <CheckBox
-            android:id="@+id/tpCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_weight="0"
-            android:text="Has TP Groups ?" />
-    </LinearLayout>
-
     <Button
-        android:id="@+id/createClassNextBtn"
+        android:id="@+id/createClassFinalBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
