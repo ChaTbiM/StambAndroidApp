@@ -1,13 +1,19 @@
 package com.example.stambapplication;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -51,6 +57,20 @@ public class MainActivity extends AppCompatActivity {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
+
+    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        ClassModel createdClass = (ClassModel) intent.getSerializableExtra("CreatedClass");
+                        activeClasses.add(createdClass);
+                        createActiveClasses(activeClasses);
+                    }
+                }
+            });
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,14 +141,16 @@ public class MainActivity extends AppCompatActivity {
     public void goToCreateClassView() {
         Intent createClassIntent = new Intent(this, CreateClass.class);
 
-        startActivity(createClassIntent);
+        mStartForResult.launch(createClassIntent);
     }
 
 
-    public void accessGroup(int classId) {
+    public void accessGroup(int classId)  {
         Intent intent = new Intent(this, GroupsActivity.class);
 
         intent.putExtra(String.valueOf(CLASS_ID), classId);
+
+
         startActivity(intent);
     }
 

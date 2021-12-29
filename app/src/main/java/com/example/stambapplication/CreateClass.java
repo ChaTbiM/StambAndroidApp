@@ -31,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +48,7 @@ public class CreateClass extends AppCompatActivity {
     public int grade = 0;
     private RequestQueue queue;
     private JsonObjectRequest createClassRequest;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
 
     @Override
@@ -136,7 +138,17 @@ public class CreateClass extends AppCompatActivity {
         JsonObjectRequest createClassRequest = new JsonObjectRequest(Request.Method.POST, url + "active-classes", jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("post response", response.toString());
+                try {
+                    ClassModel createdClass = objectMapper.readValue(response.toString(), new TypeReference<ClassModel>() {
+                    });
+                    getIntent().putExtra("CreatedClass",createdClass);
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                } catch (JsonMappingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -144,6 +156,8 @@ public class CreateClass extends AppCompatActivity {
                 Log.d("post response", error.toString());
             }
         });
+
+
 
         RequestQueueSingleton.getInstance(getApplicationContext()).addToRequestQueue(createClassRequest);
     }
