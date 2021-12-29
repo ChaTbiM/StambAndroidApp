@@ -22,7 +22,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
     public ClassAdapter(List<ClassModel> classList,OnClassClickListener clickListener) {
         this.classList = classList;
         this.clickListener = clickListener;
-
     }
 
 
@@ -36,7 +35,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
         }
 
         public void bind(final ClassModel item, final OnClassClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
+            classItemText.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onClassClick(item);
                 }
@@ -65,6 +64,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
         ClassModel classModel = classList.get(position);
 
         TextView textView = holder.classItemText;
+
         textView.setText(classModel.getName());
     }
 

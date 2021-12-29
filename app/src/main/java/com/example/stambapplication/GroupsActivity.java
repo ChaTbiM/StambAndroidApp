@@ -57,10 +57,4 @@ public class GroupsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public void getAllClassGroups (int classId) {
-
-    }
-
-
 }

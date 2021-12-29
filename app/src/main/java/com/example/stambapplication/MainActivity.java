@@ -47,18 +47,12 @@ public class MainActivity extends AppCompatActivity {
     public static int CLASS_ID = 0;
     private final boolean isClassesEmpty = true;
     private final String url = "http://10.0.2.2:3000/";
-    private RequestQueue queue;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private RequestQueue queue;
     private ArrayList<ClassModel> activeClasses = new ArrayList<ClassModel>();
     private ArrayList<ClassModel> archivedClasses = new ArrayList<ClassModel>();
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
-
-    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+    private final ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
@@ -71,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void accessGroup(int classId)  {
+    public void accessGroup(int classId) {
         Intent intent = new Intent(this, GroupsActivity.class);
 
         intent.putExtra(String.valueOf(CLASS_ID), classId);
