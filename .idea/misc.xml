@@ -5,8 +5,11 @@
       <map>
         <entry key="..\:/Users/mustapha/AndroidStudioProjects/StambApplication/app/src/main/res/layout/activity_create_class.xml" value="0.2" />
         <entry key="..\:/Users/mustapha/AndroidStudioProjects/StambApplication/app/src/main/res/layout/activity_create_groups.xml" value="0.1" />
+        <entry key="..\:/Users/mustapha/AndroidStudioProjects/StambApplication/app/src/main/res/layout/activity_delete.xml" value="0.25" />
+        <entry key="..\:/Users/mustapha/AndroidStudioProjects/StambApplication/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/mustapha/AndroidStudioProjects/StambApplication/app/src/main/res/layout/class_item.xml" value="0.33" />
         <entry key="..\:/Users/mustapha/AndroidStudioProjects/StambApplication/app/src/main/res/layout/group_number_item.xml" value="0.13465952563121653" />
+        <entry key="..\:/Users/mustapha/AndroidStudioProjects/StambApplication/app/src/main/res/layout/popup_window.xml" value="0.275" />
       </map>
     </option>
   </component>
