@@ -1,9 +1,15 @@
 package com.example.stambapplication;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -63,8 +69,6 @@ public class GroupsActivity extends AppCompatActivity {
         });
 
 
-
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -86,11 +90,42 @@ public class GroupsActivity extends AppCompatActivity {
     public void showGroups (List<GroupModel> groups){
         RecyclerView groupListView = (RecyclerView) findViewById(R.id.groupListView);
 
-        GroupAdapter groupListAdapter = new GroupAdapter(groupList);
+        GroupAdapter groupListAdapter = new GroupAdapter(groupList, (popupWindow, groupModel)  ->{
+            View popupView = popupWindow.getContentView();
+
+            populateDeletePopupContent(popupView, groupModel);
+
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    findViewById(R.id.groupsActivity).setBackgroundColor(Color.parseColor("#FFFFFF"));
+                }
+            });
+
+            popupWindow.showAtLocation(popupWindow.getContentView(), Gravity.CENTER, 0, 0);
+        });
 
         groupListView.setAdapter(groupListAdapter);
 
         groupListView.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
+    public void populateDeletePopupContent(View popupView, GroupModel groupModel) {
+        TextView popupTitle = popupView.findViewById(R.id.popupTitle);
+        popupTitle.setText("Delete Group");
+
+        TextView popupContent = popupView.findViewById(R.id.popupContent);
+        popupContent.setText("Are you sure you want to delete group with number  " + groupModel.getNumber());
+
+        popupView.findViewById(R.id.popupContent).setVisibility(View.VISIBLE);
+        popupView.findViewById(R.id.popupEditContentContainer).setVisibility(View.GONE);
+
+        findViewById(R.id.groupsActivity).setBackgroundColor(Color.parseColor("#989696"));
+        popupView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+    }
+
+
+
+
 }

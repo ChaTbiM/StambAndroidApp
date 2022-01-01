@@ -18,6 +18,7 @@ import android.text.InputFilter;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -197,12 +198,6 @@ public class MainActivity extends AppCompatActivity {
         }, (popupWindow, classModel) -> {
             View popupView = popupWindow.getContentView();
 
-            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    popupView.findViewById(R.id.main).setBackgroundColor(Color.parseColor("#FFFFFF"));
-                }
-            });
             populateDeletePopupContent(popupView, classModel);
 
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
