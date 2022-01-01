@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -15,6 +16,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,10 +24,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -35,6 +39,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,6 +52,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private RequestQueue queue;
     private ArrayList<ClassModel> activeClasses = new ArrayList<ClassModel>();
+    private ArrayList<ClassModel> archivedClasses = new ArrayList<ClassModel>();
+    private ClassAdapter activeClassListAdapter;
+
+    private ClassModel selectedClassModel;
+
     private final ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -71,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
-    private ArrayList<ClassModel> archivedClasses = new ArrayList<ClassModel>();
+    private ClassAdapter archivedClassListAdapter;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -87,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
         Button createClassButton = findViewById(R.id.createClassBtn);
+
 
         createClassButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -161,56 +173,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void showDeletePopup(View view, ClassModel classModel) {
-        // inflate the layout of the popup window
-        LayoutInflater inflater = (LayoutInflater)
-                getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_window, null);
-
-        // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // lets taps outside the popup also dismiss it
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-        populateDeletePopupContent(popupView, classModel);
-
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                findViewById(R.id.main).setBackgroundColor(Color.parseColor("#FFFFFF"));
-            }
-        });
-
-        Button cancelBtn = popupView.findViewById(R.id.cancelBtn);
-        Button confirmBtn = popupView.findViewById(R.id.confirmBtn);
-
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
-
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
-
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-    }
-
     public void showEditPopup(View popupView, ClassModel classModel) {
 
         findViewById(R.id.main).setBackgroundColor(Color.parseColor("#989696"));
         popupView.setBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
-    public void populateDeletePopupContent(View popupView, ClassModel classModel) {
+    public  void populateDeletePopupContent(View popupView, ClassModel classModel) {
         TextView popupTitle = popupView.findViewById(R.id.popupTitle);
         popupTitle.setText("Delete Class");
 
@@ -221,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         popupView.setBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
+
     public void createActiveClasses(ArrayList<ClassModel> activeClasses) {
         RecyclerView activeClassListView = findViewById(R.id.activeClassListView);
 
@@ -228,18 +198,39 @@ public class MainActivity extends AppCompatActivity {
 
         ClassAdapter activeClassListAdapter = new ClassAdapter(activeClassList, classModel -> {
             accessGroup(classModel.getId());
-        }, (view, classModel) -> {
-            showDeletePopup(view, classModel);
-        }, (view, classModel) -> {
-            showEditPopup(view, classModel);
-        }, false
+        }, (popupWindow, classModel) -> {
+            View popupView = popupWindow.getContentView();
+
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    popupView.findViewById(R.id.main).setBackgroundColor(Color.parseColor("#FFFFFF"));
+                }
+            });
+            populateDeletePopupContent(popupView, classModel);
+
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    findViewById(R.id.main).setBackgroundColor(Color.parseColor("#FFFFFF"));
+                }
+            });
+
+            popupWindow.showAtLocation(popupWindow.getContentView(), Gravity.CENTER, 0, 0);
+
+        }, (popupWindow, classModel) -> {
+        }, (classModel)-> {
+//            deleteClassRequest(classModel);
+        },classModel -> {
+
+        } ,false
         );
 
         activeClassListView.setAdapter(activeClassListAdapter);
         activeClassListView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void createArchivedClasses(ArrayList<ClassModel> archivedClasses) {
+    public void createArchivedClasses(ArrayList<ClassModel> archivedClasses)  {
         RecyclerView archivedClassListView = findViewById(R.id.archivedClassListView);
 
         List<ClassModel> archivedClassList = archivedClasses;
@@ -252,12 +243,40 @@ public class MainActivity extends AppCompatActivity {
         archivedClassListView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void deleteClassRequest(ClassModel classModel) {
-
-    }
+//    public void deleteClassRequest(ClassModel classModel) {
+//        int classId = classModel.getId();
+//        StringRequest deleteClassRequest = new StringRequest(Request.Method.DELETE, url + "class/" + classId, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                try {
+//                    selectedClassModel = objectMapper.readValue(response, new TypeReference<ClassModel>() {
+//                    });
+//                    Log.d("deleted class ", response);
+//                }catch (Exception e){
+//                    System.out.println("errooor");
+//                    e.printStackTrace();
+//                }
+//                showToast(true, "Deleted Class Successfully");
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                try {
+//                    throw  new Exception(error.toString());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                Log.d("delete class error", error.toString());
+//                showToast(true, "Class was not deleted , please try again");
+//            }
+//        }
+//        );
+//
+//        RequestQueueSingleton.getInstance(getApplicationContext()).addToRequestQueue(deleteClassRequest);
+//    }
 
     public void updateClassRequest(ClassModel classModel) {
-
     }
+
 
 }
