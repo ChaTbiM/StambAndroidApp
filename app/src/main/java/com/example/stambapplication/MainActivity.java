@@ -148,11 +148,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void showEditPopup(View popupView, ClassModel classModel) {
-
-        findViewById(R.id.main).setBackgroundColor(Color.parseColor("#989696"));
-        popupView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-    }
 
     public void populateDeletePopupContent(View popupView, ClassModel classModel) {
         TextView popupTitle = popupView.findViewById(R.id.popupTitle);
@@ -160,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
 
         TextView popupContent = popupView.findViewById(R.id.popupContent);
         popupContent.setText("Are you sure you want to delete class with name  " + classModel.getName());
+
+        popupView.findViewById(R.id.popupContent).setVisibility(View.VISIBLE);
+        popupView.findViewById(R.id.popupEditContentContainer).setVisibility(View.GONE);
 
         findViewById(R.id.main).setBackgroundColor(Color.parseColor("#989696"));
         popupView.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -173,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         popupContent.setText("Are you sure you want to delete class with name  " + classModel.getName());
 
         popupView.findViewById(R.id.popupContent).setVisibility(View.GONE);
+        popupView.findViewById(R.id.popupEditContentContainer).setVisibility(View.VISIBLE);
 
         EditText moduleInput = popupView.findViewById(R.id.editModuleInput);
         EditText specialtyInput = popupView.findViewById(R.id.editSpecialtyInput);
