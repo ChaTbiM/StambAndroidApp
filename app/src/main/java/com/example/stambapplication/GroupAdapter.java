@@ -45,7 +45,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         GroupModel groupModel = groupList.get(position);
 
         TextView textView = holder.groupItemText;
-        textView.setText("Group " + groupModel.getType() + "  N: " + groupModel.getGroupNumber());
+        textView.setText("Group " + groupModel.getType() + "  N: " + groupModel.getNumber());
     }
 
 

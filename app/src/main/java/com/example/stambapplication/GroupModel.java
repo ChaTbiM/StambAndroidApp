@@ -1,25 +1,29 @@
 package com.example.stambapplication;
 
-public class GroupModel {
+import java.io.Serializable;
+
+public class GroupModel implements Serializable {
     private int id;
-    private int groupNumber;
+    private int number;
     private String type;
 
-    public GroupModel(int id, int groupNumber, String type) {
-        this.id = id;
-        this.groupNumber = groupNumber;
-        this.type = type;
+    public int getNumber() {
+        return number;
     }
 
-    public GroupModel(int groupNumber, String type) {
-        this.groupNumber = groupNumber;
-        this.type = type;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    public GroupModel( String type) {
-        this.type = type;
+    public int getClassId() {
+        return classId;
     }
 
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+
+    private int classId;
 
     public int getId() {
         return id;
@@ -30,11 +34,11 @@ public class GroupModel {
     }
 
     public int getGroupNumber() {
-        return groupNumber;
+        return number;
     }
 
     public void setGroupNumber(int groupNumber) {
-        this.groupNumber = groupNumber;
+        this.number = groupNumber;
     }
 
     public String getType() {

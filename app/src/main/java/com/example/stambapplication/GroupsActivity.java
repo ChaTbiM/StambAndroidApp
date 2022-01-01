@@ -2,6 +2,7 @@ package com.example.stambapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -10,13 +11,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GroupsActivity extends AppCompatActivity {
-    private RequestQueue queue;
+    private final String url = "http://10.0.2.2:3000/";
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private List<GroupModel> groupList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,25 +38,37 @@ public class GroupsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int classId = intent.getIntExtra(String.valueOf(MainActivity.CLASS_ID), 0);
-        System.out.println("class id is " + classId);
 
-        RecyclerView groupListView = (RecyclerView) findViewById(R.id.groupListView);
+        StringRequest getGroups = new StringRequest(Request.Method.GET, url + "class/" + classId + "/groups", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    groupList = objectMapper.readValue(response, new TypeReference<List<GroupModel>>() {
+                    });
+                    showGroups(groupList);
+                    Log.d("groups", response.toString());
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                } catch (JsonMappingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("error", error.toString());
+            }
+        });
 
-        List<GroupModel> groupList = new ArrayList<>();
-//        TODO : FETCH GROUP LIST PER CLASS ID AND add to groupLIST
-        groupList.add(new GroupModel(1, 1 + classId, "td"));
-        groupList.add(new GroupModel(2, 2 + classId, "tp"));
-        groupList.add(new GroupModel(3, 3 + classId, "tp"));
 
-        GroupAdapter groupListAdapter = new GroupAdapter(groupList);
-
-        groupListView.setAdapter(groupListAdapter);
-
-        groupListView.setLayoutManager(new LinearLayoutManager(this));
 
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        RequestQueueSingleton.getInstance(getApplicationContext()).addToRequestQueue(getGroups);
 
     }
 
@@ -56,5 +81,16 @@ public class GroupsActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showGroups (List<GroupModel> groups){
+        RecyclerView groupListView = (RecyclerView) findViewById(R.id.groupListView);
+
+        GroupAdapter groupListAdapter = new GroupAdapter(groupList);
+
+        groupListView.setAdapter(groupListAdapter);
+
+        groupListView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 }
